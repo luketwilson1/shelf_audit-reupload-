@@ -1,9 +1,9 @@
 # ShelfAudit
 Computer Vision–Based Retail Shelf Analysis
 
-**Course:** CSC 410 Computational Intelligence
-**Institution:** Berea College
-**Author:** Luke Wilson
+**Course:** CSC 410 Computational Intelligence<br>
+**Institution:** Berea College<br>
+**Author:** Luke Wilson<br>
 **Semester:** Fall 2022
 
 ## Overview
