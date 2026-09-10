@@ -1,0 +1,81 @@
+[
+  {
+    "video": "IMG_1849",
+    "frames": 278,
+    "identified_tracks": 12,
+    "distinct_identities": 12,
+    "persistent_unknowns": 0,
+    "short_tracks": 8,
+    "unique_order": true,
+    "status": "review_needed",
+    "reasons": [
+      "Some pairwise relationships have insufficient or conflicting evidence."
+    ],
+    "candidate_order": [
+      "great_value_chicken_flavored_stuffing_mix_6oz",
+      "great_value_classic_roast_ground_coffee_40_3oz",
+      "great_value_magic_treasures_cereal_11_5oz",
+      "great_value_black_tea_100ct_8oz",
+      "great_value_creamy_peanut_butter_64oz",
+      "great_value_all_purpose_flour_2lb",
+      "great_value_plain_bread_crumbs_15oz",
+      "great_value_basmati_rice_2lb",
+      "great_value_raw_honey_16oz",
+      "great_value_traditional_refried_beans_16oz",
+      "great_value_instant_mashed_potatoes_13_75oz",
+      "great_value_garlic_bread_sticks_10_5oz"
+    ]
+  },
+  {
+    "video": "IMG_1850",
+    "frames": 231,
+    "identified_tracks": 12,
+    "distinct_identities": 12,
+    "persistent_unknowns": 0,
+    "short_tracks": 13,
+    "unique_order": true,
+    "status": "candidate_order",
+    "reasons": [],
+    "candidate_order": [
+      "great_value_chicken_flavored_stuffing_mix_6oz",
+      "great_value_classic_roast_ground_coffee_40_3oz",
+      "great_value_magic_treasures_cereal_11_5oz",
+      "great_value_black_tea_100ct_8oz",
+      "great_value_creamy_peanut_butter_64oz",
+      "great_value_all_purpose_flour_2lb",
+      "great_value_plain_bread_crumbs_15oz",
+      "great_value_basmati_rice_2lb",
+      "great_value_raw_honey_16oz",
+      "great_value_traditional_refried_beans_16oz",
+      "great_value_instant_mashed_potatoes_13_75oz",
+      "great_value_garlic_bread_sticks_10_5oz"
+    ]
+  },
+  {
+    "video": "IMG_1851",
+    "frames": 202,
+    "identified_tracks": 12,
+    "distinct_identities": 12,
+    "persistent_unknowns": 0,
+    "short_tracks": 8,
+    "unique_order": true,
+    "status": "review_needed",
+    "reasons": [
+      "Some pairwise relationships have insufficient or conflicting evidence."
+    ],
+    "candidate_order": [
+      "great_value_chicken_flavored_stuffing_mix_6oz",
+      "great_value_classic_roast_ground_coffee_40_3oz",
+      "great_value_magic_treasures_cereal_11_5oz",
+      "great_value_black_tea_100ct_8oz",
+      "great_value_creamy_peanut_butter_64oz",
+      "great_value_all_purpose_flour_2lb",
+      "great_value_plain_bread_crumbs_15oz",
+      "great_value_basmati_rice_2lb",
+      "great_value_raw_honey_16oz",
+      "great_value_traditional_refried_beans_16oz",
+      "great_value_instant_mashed_potatoes_13_75oz",
+      "great_value_garlic_bread_sticks_10_5oz"
+    ]
+  }
+]

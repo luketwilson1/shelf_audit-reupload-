@@ -1,0 +1,11 @@
+{
+  "source": "pass_original_1.mov",
+  "status": "assistant_visually_reviewed",
+  "coordinate_space": "540x960 upright preview pixels",
+  "scope": "Visible portions of foreground catalog packages; background bottle is not a target. Thin fragments use temporal context.",
+  "frames": {
+    "30": [[0,274,98,619],[38,452,430,663],[415,242,540,620]],
+    "90": [[0,494,17,620],[0,258,228,619],[204,76,540,637],[511,403,540,642]],
+    "210": [[0,433,19,648],[0,269,294,678],[307,60,540,638]]
+  }
+}

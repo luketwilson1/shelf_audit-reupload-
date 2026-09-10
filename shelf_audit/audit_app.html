@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ShelfAudit · Video inventory review</title>
+<style>
+:root{color-scheme:light;font-family:"Times New Roman",Times,serif;background:white;color:black}
+body{margin:8px}main{max-width:1000px;margin:20px auto;padding:0 12px}
+header{border-bottom:2px solid black;padding:8px 0;display:flex;justify-content:space-between;gap:16px;align-items:baseline}
+.brand{font-size:24px;font-weight:bold}.badge{font-size:14px}
+h1{font-size:32px;margin:24px 0 16px}h2{font-size:22px;margin-top:0}p{line-height:1.45}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{border:1px solid #777;padding:18px;background:white}
+button,.link{font:16px "Times New Roman",Times,serif;background:#e8e8e8;color:black;border:2px outset #aaa;border-radius:0;padding:5px 12px;cursor:pointer}
+button:active{border-style:inset}button:disabled{color:#777;cursor:wait}input{display:block;margin:16px 0;max-width:100%;font:16px "Times New Roman",Times,serif}
+input::file-selector-button{border:2px outset #aaa;border-radius:0;background:#e8e8e8;color:black;font:inherit;padding:3px 8px}
+a{color:#0000ee;text-decoration:underline}a:visited{color:#551a8b}li{margin:12px 0;line-height:1.4}
+#status{min-height:40px;margin-top:18px}progress{width:100%;accent-color:#555}
+iframe{box-sizing:border-box;width:100%;height:850px;border:1px solid #777;border-radius:0;margin-top:12px;background:white}
+footer{border-top:1px solid #777;margin-top:24px;padding-top:12px;font-size:14px;line-height:1.4}
+@media(max-width:720px){.grid{grid-template-columns:1fr}main{margin:12px auto;padding:0 4px}h1{font-size:28px}iframe{height:700px}}
+</style><style id="plain-report-theme">
+:root{color-scheme:light!important;background:white!important;color:black!important}
+*{box-sizing:border-box}
+body{font-family:"Times New Roman",Times,serif!important;background:white!important;color:black!important;margin:20px auto!important;padding:0 12px!important;max-width:1000px!important}
+h1{font-size:32px!important}h2{font-size:22px!important}
+p,small,footer{color:black!important;line-height:1.45!important}
+article,.panel,.card,li{background:white!important;color:black!important;border-radius:0!important;box-shadow:none!important}
+article,section.panel{border:1px solid #777!important}
+img,video,iframe,input,button,.card,.panel,.badge{border-radius:0!important;box-shadow:none!important}
+a{color:#0000ee!important;text-decoration:underline!important}a:visited{color:#551a8b!important}
+button,input{font-family:"Times New Roman",Times,serif!important}
+button{background:#e8e8e8!important;color:black!important;border:2px outset #aaa!important}
+button:active{border-style:inset!important}button:disabled{color:#666!important;cursor:wait}
+input,select,textarea{background:white!important;color:black!important;border:1px solid #777!important;border-radius:0!important}
+input[type=file]{border:0!important}
+input::file-selector-button{font:inherit;background:#e8e8e8;color:black;border:2px outset #aaa;border-radius:0}
+.badge,.eyebrow,.score,.muted,#status{color:black!important;letter-spacing:normal!important}
+.error{color:#a00000!important}
+#preview,.match img{background:#f4f4f4!important;border:1px solid #aaa!important}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid #000080;outline-offset:3px}
+video{display:block;margin:16px 0;max-width:100%;background:black}
+figure{margin:12px 8px}figcaption{font-size:15px;line-height:1.35}
+header,footer{border-color:#777!important}
+@media(max-width:640px){body{margin:12px auto!important;padding:0 8px!important}.grid,.workspace{grid-template-columns:1fr!important}h1{font-size:28px!important}}
+table{border-collapse:collapse}th,td{border:1px solid #777;padding:6px}
+</style>
+<main>
+<h1>Shelf Video Review</h1><p>Upload a saved video. Follow packages across frames, inspect the proposed shelf order, and review uncertain detections.</p>
+<div class="grid"><section class="panel"><h2>Audit a video</h2><label for="file">Choose an MP4 or MOV video</label><input id="file" type="file" accept="video/*,.mov,.mp4"><p>One shelf row and a steady camera pass work best. Maximum upload: 256 MB.</p><button id="run">Process video</button><div id="status" role="status" aria-live="polite">Checking model availability…</div><progress id="progress" hidden></progress><a id="open" hidden target="_blank">Open full results</a></section>
+<section class="panel"><h2>Sample videos</h2><p>The same frozen model produced 12 identified tracks and no persistent unknown tracks on each of these three videos.</p><ul><li><a href="/results/fresh_evaluation/IMG_1849/tracking/review.html" class="example">Shelf pass 1 — order needs review</a></li><li><a href="/results/fresh_evaluation/IMG_1850/tracking/review.html" class="example">Shelf pass 2 — suggested order</a></li><li><a href="/results/fresh_evaluation/IMG_1851/tracking/review.html" class="example">Shelf pass 3 — order needs review</a></li></ul><p>These are small household tests, not a validated store-inventory benchmark.</p></section></div>
+<section id="result" hidden><h2 style="margin-top:32px">Playback and evidence</h2><iframe id="viewer" title="Tracked video and shelf order"></iframe></section>
+<footer>Videos and outputs stay on this computer in outputs/app_runs. Processing does not train the model. Track counts are candidates, not verified inventory counts. Short fragments and duplicate boxes can remain.</footer></main>
+<script>
+const $=id=>document.getElementById(id);let timer;
+function show(url){$('open').textContent='Open full results';$('viewer').src=url;$('result').hidden=false;$('open').href=url;$('open').hidden=false;}
+document.querySelectorAll('.example').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();show(a.getAttribute('href'));}));
+fetch('/api/info').then(r=>r.json()).then(x=>{$('status').textContent=x.ready?'Ready. Choose a video to begin.':'Missing local model or catalog. See README setup.';$('run').disabled=!x.ready;}).catch(()=>{$('status').textContent='Cannot reach the local server.';});
+$('run').onclick=async()=>{const f=$('file').files[0];if(!f){$('status').textContent='Choose a video first.';return}if(f.size>256*1024*1024){$('status').textContent='Choose a video under 256 MB.';return}
+$('run').disabled=true;$('progress').hidden=false;$('status').textContent='Uploading to the local processor…';$('open').hidden=true;
+try{const response=await fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/octet-stream'},body:f});const j=await response.json();if(!response.ok)throw Error(j.error);poll(j.id);}catch(e){finish(e.message)}};
+function finish(message){$('status').textContent=message;$('progress').hidden=true;$('run').disabled=false;}
+async function poll(id){try{const response=await fetch('/api/jobs/'+id);const j=await response.json();if(!response.ok)throw Error(j.error);$('status').textContent=j.stage;if(j.status==='complete'){finish('Complete. Review the playback and candidate order below.');show(j.url);return}if(j.status==='failed'){finish(j.stage);if(j.log){$('open').href=j.log;$('open').textContent='Open processing log';$('open').hidden=false}return}timer=setTimeout(()=>poll(id),1500);}catch(e){finish(e.message)}}
+</script></html>

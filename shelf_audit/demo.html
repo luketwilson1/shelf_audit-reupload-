@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ShelfAudit · Recognizer</title>
+<style>
+:root{font-family:system-ui,sans-serif;color:#dfe8ef;background:#101920}*{box-sizing:border-box}body{max-width:1240px;margin:auto;padding:36px}header{display:flex;justify-content:space-between;gap:24px;align-items:center;border-bottom:1px solid #31434c;padding-bottom:24px}.eyebrow{color:#76d8b0;text-transform:uppercase;letter-spacing:.15em;font-size:12px}h1{font-size:36px;margin:8px 0}p{line-height:1.55;color:#afc1cb}.badge{border:1px solid #426656;border-radius:24px;padding:10px 16px;color:#99e6c0;font-size:13px}.workspace{display:grid;grid-template-columns:360px 1fr;gap:28px;margin-top:28px}.panel{padding:24px;background:#192730;border:1px solid #30434e;border-radius:16px}h2{margin:0 0 16px;font-size:20px}input[type=file]{width:100%;margin:14px 0}button{border:0;background:#86e1b7;color:#102b20;padding:13px 20px;font-weight:700;border-radius:8px;cursor:pointer;width:100%;font-size:15px}button:disabled{opacity:.5;cursor:wait}#preview{display:none;width:100%;height:280px;object-fit:contain;margin:12px 0;background:#0e161c;border-radius:10px}small{color:#a9bcc5;line-height:1.5}#status{color:#a4e5c9;margin:16px 0;min-height:24px}.match{display:grid;grid-template-columns:100px 1fr;gap:20px;padding:20px 0;border-top:1px solid #314550}.match img{width:100px;height:125px;object-fit:contain;background:#eef2f3;border-radius:8px}.match h3{font-size:17px;margin:2px 0 12px}.score{font-size:23px;color:#8be7bb}.muted{font-size:13px;color:#9caeb8}.empty{padding:45px 0}.controls{display:flex;gap:16px;margin:16px 0}.controls label{font-size:13px}.controls input{width:110px;display:block;background:#0e171f;color:white;border:1px solid #47616e;border-radius:4px;padding:8px;margin-top:5px}.error{color:#ffc08b!important}footer{font-size:13px;border-top:1px solid #30434e;margin-top:30px;padding-top:18px;color:#9caeb8}@media(max-width:800px){body{padding:18px}.workspace{grid-template-columns:1fr}header{align-items:start}.badge{max-width:140px}h1{font-size:28px}}
+</style><style id="plain-report-theme">
+:root{color-scheme:light!important;background:white!important;color:black!important}
+*{box-sizing:border-box}
+body{font-family:"Times New Roman",Times,serif!important;background:white!important;color:black!important;margin:20px auto!important;padding:0 12px!important;max-width:1000px!important}
+h1{font-size:32px!important}h2{font-size:22px!important}
+p,small,footer{color:black!important;line-height:1.45!important}
+article,.panel,.card,li{background:white!important;color:black!important;border-radius:0!important;box-shadow:none!important}
+article,section.panel{border:1px solid #777!important}
+img,video,iframe,input,button,.card,.panel,.badge{border-radius:0!important;box-shadow:none!important}
+a{color:#0000ee!important;text-decoration:underline!important}a:visited{color:#551a8b!important}
+button,input{font-family:"Times New Roman",Times,serif!important}
+button{background:#e8e8e8!important;color:black!important;border:2px outset #aaa!important}
+button:active{border-style:inset!important}button:disabled{color:#666!important;cursor:wait}
+input,select,textarea{background:white!important;color:black!important;border:1px solid #777!important;border-radius:0!important}
+input[type=file]{border:0!important}
+input::file-selector-button{font:inherit;background:#e8e8e8;color:black;border:2px outset #aaa;border-radius:0}
+.badge,.eyebrow,.score,.muted,#status{color:black!important;letter-spacing:normal!important}
+.error{color:#a00000!important}
+#preview,.match img{background:#f4f4f4!important;border:1px solid #aaa!important}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid #000080;outline-offset:3px}
+video{display:block;margin:16px 0;max-width:100%;background:black}
+figure{margin:12px 8px}figcaption{font-size:15px;line-height:1.35}
+header,footer{border-color:#777!important}
+@media(max-width:640px){body{margin:12px auto!important;padding:0 8px!important}.grid,.workspace{grid-template-columns:1fr!important}h1{font-size:28px!important}}
+table{border-collapse:collapse}th,td{border:1px solid #777;padding:6px}
+</style></head><body>
+<header><div><div class="eyebrow">ShelfAudit / Reference matching</div><h1>Product recognizer</h1><p>Compare a product close-up with your reference catalog.</p></div><div class="badge" id="health">Loading catalog…</div></header>
+<div class="workspace"><section class="panel"><h2>1. Choose a product crop</h2><small>Use a close-up containing one product. Shelf detection and automatic cropping come next.</small><input id="file" type="file" accept="image/jpeg,image/png,image/webp"><img id="preview" alt="Your selected product"><button id="run" disabled>Find product matches</button><details><summary style="margin-top:20px;cursor:pointer">Review thresholds</summary><div class="controls"><label>Min similarity<input id="score" type="number" value="0.65" min="-1" max="1" step="0.01"></label><label>Min margin<input id="margin" type="number" value="0.03" min="0" max="2" step="0.01"></label></div><small>Provisional settings. Below these thresholds, the result is flagged for review. Unknown-product rejection has not been calibrated.</small></details></section>
+<section class="panel"><h2>2. Review the closest products</h2><div id="status" role="status" aria-live="polite"></div><div id="results" class="empty"><p>Your top three distinct product matches will appear here, alongside the closest reference photo.</p></div></section></div>
+<footer>12 product identities · 56 reference photos · Local processing · Similarity is not a probability. Matching a catalog image to itself is a demonstration, not an accuracy test.</footer>
+<script>
+const $=id=>document.getElementById(id);let data=null,url=null;
+fetch('/api/info').then(r=>r.json()).then(r=>{$('health').textContent=`${r.products} products · ${r.references} photos · ${r.device.toUpperCase()}`}).catch(()=>{$('health').textContent='Service unavailable'});
+$('file').onchange=async()=>{data=null;$('run').disabled=true;const f=$('file').files[0];if(!f)return;if(f.size>14*1024*1024){$('status').textContent='Choose an image under 14 MB.';return}if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(f);$('preview').src=url;$('preview').style.display='block';const reader=new FileReader();reader.onload=()=>{data=reader.result.split(',')[1];$('run').disabled=false};reader.readAsDataURL(f);$('results').replaceChildren();$('status').textContent='Ready to match.'};
+$('run').onclick=async()=>{$('run').disabled=true;$('status').className='';$('status').textContent='Comparing with catalog…';$('results').replaceChildren();try{const response=await fetch('/api/recognize',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({image:data,min_score:Number($('score').value),min_margin:Number($('margin').value)})});const r=await response.json();if(!response.ok)throw Error(r.error||'Recognition failed');$('status').textContent=`${r.status==='review_needed'?'Needs review — '+r.reasons.join(', ').replaceAll('_',' '):'Candidate match'} · ${r.elapsed_ms} ms · margin ${r.margin===null?'N/A':r.margin.toFixed(3)}`;if(r.status==='review_needed')$('status').className='error';$('results').className='';r.matches.forEach((m,i)=>{const card=document.createElement('article');card.className='match';const img=document.createElement('img');img.src='/reference/'+m.reference_index;img.alt=m.product;const body=document.createElement('div'),title=document.createElement('h3'),score=document.createElement('div'),note=document.createElement('p');title.textContent=`${i+1}. ${m.product}`;score.className='score';score.textContent=m.similarity.toFixed(3)+' similarity';note.className='muted';note.textContent='Closest catalog reference';body.append(title,score,note);card.append(img,body);$('results').append(card)})}catch(e){$('status').className='error';$('status').textContent=e.message}finally{$('run').disabled=false}};
+</script></body></html>

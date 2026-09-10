@@ -1,0 +1,16 @@
+.venv/
+.local-libs/
+.cache/
+__pycache__/
+*.pyc
+data/
+artifacts/
+outputs/
+.DS_Store
+Thumbs.db
+.env
+.env.*
+*.egg-info/
+build/
+dist/
+.pytest_cache/
